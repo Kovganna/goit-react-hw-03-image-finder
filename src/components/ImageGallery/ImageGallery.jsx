@@ -1,3 +1,14 @@
+import ImageGalleryItem from '../ImageGalleryItem/ImageGalleryItem';
 import s from './ImageGallery.module.css';
 
-<ul className={s.ImageGallery}>{/* <!-- Набор <li> с изображениями --> */}</ul>;
+const ImageGallery = ({ pictures = [] }) => {
+  return (
+    <ul className={s.ImageGallery}>
+      {pictures.map(picture => (
+        <ImageGalleryItem key={picture.key} />
+      ))}
+    </ul>
+  );
+};
+
+export default ImageGallery;
