@@ -1,14 +1,22 @@
+import PropTypes from 'prop-types';
 import ImageGalleryItem from '../ImageGalleryItem/ImageGalleryItem';
 import s from './ImageGallery.module.css';
 
-const ImageGallery = ({ pictures = [] }) => {
+export default function ImageGallery({ images, onOpenModal }) {
   return (
-    <ul className={s.ImageGallery}>
-      {pictures.map(picture => (
-        <ImageGalleryItem key={picture.key} />
-      ))}
-    </ul>
+    <>
+      <ul className={s.ImageGallery}>
+        {images.map(image => (
+          <li className={s.ImageGalleryItem} key={image.id}>
+            <ImageGalleryItem openModal={onOpenModal} image={image} />
+          </li>
+        ))}
+      </ul>
+    </>
   );
-};
+}
 
-export default ImageGallery;
+ImageGallery.propTypes = {
+  images: PropTypes.arrayOf(PropTypes.shape).isRequired,
+  onOpenModal: PropTypes.func,
+};

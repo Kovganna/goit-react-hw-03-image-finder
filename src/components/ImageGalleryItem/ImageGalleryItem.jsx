@@ -1,15 +1,24 @@
 import s from './ImageGalleryItem.module.css';
-import { v4 as uuidv4 } from 'uuid';
+import PropTypes from 'prop-types';
 
-const ImageGalleryItem = () => {
-  const id = uuidv4();
+const ImageGalleryItem = ({ image, openModal }) => {
   return (
     <>
-      <li className={s.ImageGalleryItem} key={id}>
-        <img src="" alt="Pictures" className={s.ImageGalleryItem__image} />
-      </li>
+      <img
+        src={image.webformatURL}
+        alt={image.tag}
+        className={s.ImageGalleryItem__image}
+        onClick={() => {
+          openModal(image);
+        }}
+      />
     </>
   );
+};
+
+ImageGalleryItem.propTypes = {
+  image: PropTypes.object,
+  openModal: PropTypes.func,
 };
 
 export default ImageGalleryItem;

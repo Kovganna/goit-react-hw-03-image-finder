@@ -1,57 +1,43 @@
-import { Component } from 'react';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import './App.css';
+import { PureComponent } from 'react';
+import { getPictures } from '../servises/pixabayService';
+import Searchbar from '../components/Searchbar/Searchbar';
 import ImageGallery from '../components/ImageGallery/ImageGallery';
 import Modal from '../components/Modal/Modal';
-import getPictures from '../components/servises/pixabayService';
-import Searchbar from '../components/Searchbar/Searchbar';
+import './App.css';
 
-class App extends Component {
+class App extends PureComponent {
   state = {
-    pictures: [],
-    searchQ: '',
     searchPage: 1,
+    images: [],
+    searchQuery: '',
     loading: false,
     showModal: false,
   };
 
-  componentDidMount() {
-    console.log('componentDidMount');
-    this.setState({ loading: true });
-
-    getPictures()
-      .then(pictures => this.setState({ pictures }))
-      .finally(() => this.setState({ loading: false }))
-      .catch(error => console.log(error.message));
-
-    // const { query, page } = this.state;
-    // return getPictures(query, page)
-    //   .then(res => res.json())
-    //   .then(pictures =>
-    //     this.setState(prev => ({
-    //       pictures: [...prev.pictures, ...pictures],
-    //       page: prev.page + 1,
-    //     })),
-    //   );
-  }
-
-  handleSearchSubmit = searchQ => {
-    this.setState({ searchQ });
+  handleSearchSubmit = searchQuery => {
+    this.setState({ searchQuery });
   };
 
-  searchPictures() {
-    const { searchQ, searchPage } = this.state;
-    return getPictures(searchQ, searchPage).then(pictures => {
+  componentDidUpdate(prevProps, prevState) {
+    const { searchQuery, searchPage } = this.state;
+    if (searchQuery !== prevState.searchQuery) {
+      this.getPictures()
+        .catch(err => console.log(err))
+        .finally(() => this.setState({ loading: false }));
+    }
+  }
+
+  getPictures() {
+    const { searchQuery, searchPage } = this.state;
+    this.setState({ loading: true });
+    return getPictures(searchQuery, searchPage).then(images => {
       this.setState(prev => ({
-        pictures: [...prev.picture, ...pictures],
+        images: [...prev.images, ...images],
         page: prev.page + 1,
       }));
     });
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    console.log('componentDidUpdate');
   }
 
   toggleModal = () => {
@@ -60,27 +46,20 @@ class App extends Component {
     }));
   };
 
-  componentWillUnmount() {
-    console.log('componentWillUnmount');
-  }
-
   render() {
     const { showModal } = this.state;
 
     return (
       <div className="App">
         <Searchbar onSubmit={this.handleSearchSubmit} />
-        {this.state.loading && <h1>Loading...</h1>}
-        {this.state.pictures && <div>{this.state.searchQ}</div>}
+        {this.state.searchQuery && <div>{this.state.searchQuery}</div>}
         <button type="button" onClick={this.toggleModal}>
           Open
         </button>
 
-        <ImageGallery />
+        <ImageGallery searchQ={this.state.searchQuery} />
         {showModal && (
           <Modal onClose={this.toggleModal}>
-            <h1>Hello</h1>
-            <p>Lorem 50*3</p>
             <button type="button" onClick={this.toggleModal}>
               Close
             </button>
