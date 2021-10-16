@@ -7,7 +7,6 @@ class Searchbar extends Component {
   state = {
     images: [],
     searchQuery: '',
-    total: '',
   };
 
   handleChange = e => {
