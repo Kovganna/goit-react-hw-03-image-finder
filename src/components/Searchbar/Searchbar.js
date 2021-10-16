@@ -3,6 +3,7 @@ import s from './Searchbar.module.css';
 import { toast } from 'react-toastify';
 class Searchbar extends Component {
   state = {
+    images: [],
     searchQuery: '',
   };
 
@@ -15,17 +16,6 @@ class Searchbar extends Component {
 
     if (this.state.searchQuery.trim() === '') {
       toast.error('Search images and photos', {
-        position: 'top-center',
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-      return;
-    } else if (this.state.searchQuery.trim() !== 'true') {
-      toast.error('No matches...', {
         position: 'top-center',
         autoClose: 3000,
         hideProgressBar: false,

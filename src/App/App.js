@@ -4,6 +4,7 @@ import { PureComponent } from 'react';
 import { getPictures } from '../servises/pixabayService';
 import Searchbar from '../components/Searchbar/Searchbar';
 import ImageGallery from '../components/ImageGallery/ImageGallery';
+import Loader from '../components/Loader/Loader';
 import Modal from '../components/Modal/Modal';
 // import loadMoreBtn from '../components/Button/Button';
 import './App.css';
@@ -47,26 +48,29 @@ class App extends PureComponent {
     }));
   };
 
-  onClickImage = largeImage => {
+  onClickLargeImage = largeImage => {
     this.setState({ largeImage });
     this.toggleModal();
   };
 
   render() {
-    const { images, searchQuery, largeImage, showModal } = this.state;
+    const { images, largeImage, showModal, loading } = this.state;
 
     return (
       <div>
         <Searchbar onSubmit={this.handleSearchSubmit} />
-        {searchQuery && <div>{searchQuery}</div>}
-        {/* <button type="button" onClick={toggleModal}>
-          Open
-        </button> */}
 
-        <ImageGallery images={images} onClick={this.onClickImage} />
+        {loading && <Loader />}
+
+        <ImageGallery images={images} onOpenModal={this.onClickLargeImage} />
         {showModal && (
           <Modal onClose={this.toggleModal}>
-            <img src={largeImage.largeImageURL} alt={largeImage.tag} />
+            {loading && <Loader />}
+            <img
+              src={largeImage.largeImageURL}
+              alt={largeImage.tag}
+              id={largeImage.id}
+            />
             <button type="button" onClick={this.toggleModal}>
               Close
             </button>
