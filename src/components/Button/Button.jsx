@@ -1,6 +1,8 @@
-import s from './Button.module.css';
+const loadMoreBtn = () => {
+  window.scrollTo({
+    top: document.documentElement.scrollHeight,
+    behavior: 'smooth',
+  });
+};
 
-window.scrollTo({
-  top: document.documentElement.scrollHeight,
-  behavior: 'smooth',
-});
+export default loadMoreBtn;

@@ -2,21 +2,20 @@ import PropTypes from 'prop-types';
 import ImageGalleryItem from '../ImageGalleryItem/ImageGalleryItem';
 import s from './ImageGallery.module.css';
 
-export default function ImageGallery({ images, onOpenModal }) {
+function ImageGallery({ images = [], onOpenModal }) {
+  // console.log(images);
   return (
-    <>
-      <ul className={s.ImageGallery}>
-        {images.map(image => (
-          <li className={s.ImageGalleryItem} key={image.id}>
-            <ImageGalleryItem openModal={onOpenModal} image={image} />
-          </li>
-        ))}
-      </ul>
-    </>
+    <ul className={s.ImageGallery}>
+      {images.map(image => (
+        <ImageGalleryItem openModal={onOpenModal} image={image} />
+      ))}
+    </ul>
   );
 }
 
 ImageGallery.propTypes = {
-  images: PropTypes.arrayOf(PropTypes.shape).isRequired,
+  images: PropTypes.arrayOf(PropTypes.shape),
   onOpenModal: PropTypes.func,
 };
+
+export default ImageGallery;
