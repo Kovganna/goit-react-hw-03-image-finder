@@ -1,10 +1,12 @@
 import { Component } from 'react';
 import s from './Searchbar.module.css';
 import { toast } from 'react-toastify';
+import PropTypes from 'prop-types';
 class Searchbar extends Component {
   state = {
     images: [],
     searchQuery: '',
+    total: '',
   };
 
   handleChange = e => {
@@ -25,6 +27,17 @@ class Searchbar extends Component {
         progress: undefined,
       });
       return;
+    } else if (this.state.total === 0) {
+      toast.error('No match...', {
+        position: 'top-center',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      return;
     }
 
     this.props.onSubmit(this.state.searchQuery);
@@ -32,6 +45,7 @@ class Searchbar extends Component {
   };
 
   render() {
+    const { searchQuery } = this.state;
     return (
       <>
         <header className={s.Searchbar}>
@@ -44,7 +58,7 @@ class Searchbar extends Component {
               className={s.SearchForm__input}
               type="text"
               autoComplete="off"
-              value={this.state.searchQuery}
+              value={searchQuery}
               onChange={this.handleChange}
               autoFocus
               placeholder="Search images and photos"
@@ -55,5 +69,9 @@ class Searchbar extends Component {
     );
   }
 }
+
+Searchbar.propTypes = {
+  searchQuery: PropTypes.string,
+};
 
 export default Searchbar;

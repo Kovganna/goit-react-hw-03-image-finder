@@ -6,7 +6,8 @@ import Searchbar from '../components/Searchbar/Searchbar';
 import ImageGallery from '../components/ImageGallery/ImageGallery';
 import Loader from '../components/Loader/Loader';
 import Modal from '../components/Modal/Modal';
-// import loadMoreBtn from '../components/Button/Button';
+import Button from '../components/Button/Button';
+import Scroll from '../helpers/Scroll';
 import './App.css';
 
 class App extends PureComponent {
@@ -53,6 +54,16 @@ class App extends PureComponent {
     this.toggleModal();
   };
 
+  handleLoadMoreClick = () => {
+    this.setState({ loading: true });
+    this.searchImage()
+      .then(() => {
+        Scroll();
+      })
+      .catch(err => console.log(err))
+      .finally(() => this.setState({ loading: false }));
+  };
+
   render() {
     const { images, largeImage, showModal, loading } = this.state;
 
@@ -65,7 +76,6 @@ class App extends PureComponent {
         <ImageGallery images={images} onOpenModal={this.onClickLargeImage} />
         {showModal && (
           <Modal onClose={this.toggleModal}>
-            {loading && <Loader />}
             <img
               src={largeImage.largeImageURL}
               alt={largeImage.tag}
@@ -76,6 +86,7 @@ class App extends PureComponent {
             </button>
           </Modal>
         )}
+        {!loading && images[0] && <Button onClick={this.handleLoadMoreClick} />}
         <ToastContainer
           autoClose={3000}
           position="top-center"
