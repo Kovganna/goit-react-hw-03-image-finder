@@ -7,7 +7,7 @@ class Searchbar extends Component {
   };
 
   handleChange = e => {
-    this.setState({ searchQuery: e.target.value.toLowerCase() });
+    this.setState({ searchQuery: e.currentTarget.value.toLowerCase() });
   };
 
   handleSubmit = e => {
@@ -24,7 +24,19 @@ class Searchbar extends Component {
         progress: undefined,
       });
       return;
+    } else if (this.state.searchQuery.trim() !== 'true') {
+      toast.error('No matches...', {
+        position: 'top-center',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      return;
     }
+
     this.props.onSubmit(this.state.searchQuery);
     this.setState({ searchQuery: '' });
   };

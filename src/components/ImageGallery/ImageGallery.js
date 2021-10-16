@@ -3,11 +3,12 @@ import ImageGalleryItem from '../ImageGalleryItem/ImageGalleryItem';
 import s from './ImageGallery.module.css';
 
 function ImageGallery({ images = [], onOpenModal }) {
-  // console.log(images);
   return (
     <ul className={s.ImageGallery}>
       {images.map(image => (
-        <ImageGalleryItem openModal={onOpenModal} image={image} />
+        <li className={s.ImageGalleryItem} key={image.id}>
+          <ImageGalleryItem image={image} openModal={onOpenModal} />
+        </li>
       ))}
     </ul>
   );
