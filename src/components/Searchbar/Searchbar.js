@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import s from './Searchbar.module.css';
 import { toast } from 'react-toastify';
+
 import PropTypes from 'prop-types';
 class Searchbar extends Component {
   state = {
@@ -27,7 +28,8 @@ class Searchbar extends Component {
         progress: undefined,
       });
       return;
-    } else if (this.state.total === 0) {
+    }
+    if (this.state.searchQuery === 'error') {
       toast.error('No match...', {
         position: 'top-center',
         autoClose: 3000,
@@ -46,6 +48,7 @@ class Searchbar extends Component {
 
   render() {
     const { searchQuery } = this.state;
+
     return (
       <>
         <header className={s.Searchbar}>

@@ -8,6 +8,7 @@ import Loader from '../components/Loader/Loader';
 import Modal from '../components/Modal/Modal';
 import Button from '../components/Button/Button';
 import Scroll from '../helpers/Scroll';
+import NoFoundImage from '../components/ImageErr/ImageErr';
 import './App.css';
 
 class App extends PureComponent {
@@ -65,15 +66,19 @@ class App extends PureComponent {
   };
 
   render() {
-    const { images, largeImage, showModal, loading } = this.state;
+    const { images, largeImage, showModal, loading, searchQuery } = this.state;
 
     return (
       <div>
         <Searchbar onSubmit={this.handleSearchSubmit} />
 
         {loading && <Loader />}
+        {images.length !== 0 ? (
+          <ImageGallery images={images} onOpenModal={this.onClickLargeImage} />
+        ) : (
+          searchQuery !== '' && <NoFoundImage />
+        )}
 
-        <ImageGallery images={images} onOpenModal={this.onClickLargeImage} />
         {showModal && (
           <Modal onClose={this.toggleModal}>
             <img
