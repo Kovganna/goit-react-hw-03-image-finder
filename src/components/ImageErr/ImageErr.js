@@ -1,4 +1,4 @@
-import sadDog from '../../helpers/sadDog.jpg';
+import sadDog from '../../img/sadDog.jpg';
 
 const NoFoundImage = () => {
   return (
